@@ -88,8 +88,9 @@ export default function ChatHeader({ onMenuClick }) {
                             onClick={() => router.push("/developer")}
                             className="cursor-pointer px-3 py-2 rounded-sm hover:bg-accent"
                         >
-                            Developer's Page
+                            Developer&apos;s Page
                         </DropdownMenuItem>
+
                         {/* Theme Toggler inside dropdown */}
                         <div className="px-3 py-2 flex items-center justify-between rounded-sm hover:bg-accent">
                             <span className="text-sm">Theme</span>
