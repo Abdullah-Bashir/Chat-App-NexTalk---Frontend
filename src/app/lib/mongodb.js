@@ -7,10 +7,13 @@ if (!uri) {
     throw new Error("Please add your MongoDB URI to .env.local");
 }
 
+console.log("🚨 MONGODB_URI:", process.env.MONGODB_URI);
+
 /**
  * In development mode, use a global variable so that the value
  * is preserved across module reloads caused by HMR.
  */
+
 let client;
 let clientPromise;
 
