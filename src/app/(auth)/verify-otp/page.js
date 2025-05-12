@@ -180,7 +180,8 @@ export default function VerifyOtpPage() {
 
                         {/* Resend OTP Link */}
                         <div className="text-center text-sm text-muted-foreground">
-                            Didn't receive a code?{" "}
+                            <p>Didn&apos;t receive a code?</p>
+                            {" "}
                             <button
                                 onClick={handleResendOtp}
                                 disabled={!email || isResending}
