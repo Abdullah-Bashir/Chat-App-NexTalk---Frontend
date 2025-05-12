@@ -4,8 +4,11 @@ const uri = process.env.MONGODB_URI;
 const options = {};
 
 if (!uri) {
+    console.error("❌ MONGODB_URI is missing in this context");
+    console.error("ENV KEYS:", Object.keys(process.env));
     throw new Error("Please add your MongoDB URI to .env.local");
 }
+
 
 console.log("🚨 MONGODB_URI:", process.env.MONGODB_URI);
 
