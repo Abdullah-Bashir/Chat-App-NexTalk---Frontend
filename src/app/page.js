@@ -8,6 +8,8 @@ import { ThemeToggle } from "@/app/components/ThemeToggle"
 import { Button } from "@/components/ui/button"
 import { LogOut, LogIn, MessageSquare, Settings, User } from "lucide-react"
 import { motion } from "framer-motion"
+import Link from "next/link"
+
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -36,6 +38,7 @@ export default function Home() {
       signOut({ callbackUrl: "/authentication" })
     } else {
       localStorage.removeItem("authToken")
+      localStorage.removeItem("userId")
       router.push("/authentication")
     }
   }
@@ -51,7 +54,7 @@ export default function Home() {
 
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } }
   }
 
   return (
@@ -80,7 +83,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.2 }}
           className="bg-background/80 backdrop-blur-md rounded-xl border border-border shadow-lg p-6 sm:p-8 w-full max-w-3xl space-y-6"
         >
           <div className="text-center">
@@ -104,36 +107,45 @@ export default function Home() {
             animate="show"
             className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 cursor-pointer"
           >
-            {[{
-              icon: MessageSquare,
-              title: "Real-time Chat",
-              desc: "Connect instantly with real-time messages."
-            }, {
-              icon: User,
-              title: "Custom Profiles",
-              desc: "Personalize your experience easily."
-            }, {
-              icon: Settings,
-              title: "Customization",
-              desc: "Dark mode, themes, and more settings."
-            }].map((feature, i) => (
-              <motion.div
-                key={i}
-                variants={cardVariants}
-                whileHover={{
-                  y: -6,
-                  scale: 1.04,
-                  transition: { type: "spring", stiffness: 250, damping: 15 }
-                }}
-                className="bg-background border border-border rounded-lg p-5 text-center shadow-sm hover:shadow-xl transition-all"
-              >
-                <div className="h-10 w-10 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
-                  <feature.icon className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="text-sm font-medium">{feature.title}</h3>
-                <p className="text-xs text-muted-foreground mt-1">{feature.desc}</p>
-              </motion.div>
+            {[
+              {
+                icon: MessageSquare,
+                title: "Real-time Chat",
+                desc: "Connect instantly with real-time messages.",
+                href: "/chat"
+              },
+              {
+                icon: User,
+                title: "Custom Profiles",
+                desc: "Personalize your experience easily.",
+                href: "/profile"
+              },
+              {
+                icon: Settings,
+                title: "Customization",
+                desc: "Dark mode, themes, and more settings.",
+                href: "/settings"
+              }
+            ].map((feature, i) => (
+              <Link key={i} href={isAuthenticated ? feature.href : "/authentication"}>
+                <motion.div
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    scale: 1.04,
+                    transition: { type: "spring", stiffness: 250, damping: 15 }
+                  }}
+                  className="bg-background border border-border rounded-lg p-5 text-center shadow-sm hover:shadow-xl transition-all"
+                >
+                  <div className="h-10 w-10 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+                    <feature.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="text-sm font-medium">{feature.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{feature.desc}</p>
+                </motion.div>
+              </Link>
             ))}
+
           </motion.div>
 
           {/* Call to Action Button */}

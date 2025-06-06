@@ -58,7 +58,7 @@ export default function AuthPage() {
                     </p>
 
                     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                        <TabsList className="grid grid-cols-2 gap-2 mb-4">
+                        <TabsList className="grid grid-cols-2  mb-4 w-full mx-auto ">
                             <TabsTrigger value="login">Login</TabsTrigger>
                             <TabsTrigger value="signup">Sign Up</TabsTrigger>
                         </TabsList>
@@ -92,6 +92,7 @@ export default function AuthPage() {
                         </AnimatePresence>
                     </Tabs>
                 </div>
+
             </motion.div>
         </div>
     )

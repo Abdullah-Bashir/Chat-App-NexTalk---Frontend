@@ -1,61 +1,57 @@
-"use client"
-
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import LoadingAnimation from "../components/loading-animation"
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import LoadingAnimation from "../components/loading-animation";
+import { useValidateTokenQuery } from "@/app/redux/api/authApi";
 
 export default function ProtectedRoute(WrappedComponent) {
     return function Wrapper(props) {
-        const { status } = useSession()
-        const router = useRouter()
-        const [isAuth, setIsAuth] = useState(false)
-        const [showLoading, setShowLoading] = useState(true)
-        const [loadingStartTime] = useState(Date.now()) // Track when loading started
+        const router = useRouter();
+        const [initialCheckDone, setInitialCheckDone] = useState(false);
+        const [minLoadingDone, setMinLoadingDone] = useState(false);
+        const startTimeRef = useRef(Date.now());
+        const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+
+        const { data: user, isLoading, isError } = useValidateTokenQuery(undefined, {
+            skip: !token,
+        });
 
         useEffect(() => {
-            const minLoadingTime = 3000 // 3 seconds minimum loading time
-            const token = localStorage.getItem("authToken")
+            // Set minimum loading time of 4 seconds
+            const timer = setTimeout(() => {
+                setMinLoadingDone(true);
+            }, 4000);
 
-            const checkAuth = () => {
-                if (status === "loading") return // Still loading session
+            return () => clearTimeout(timer);
+        }, []);
 
-                const elapsedTime = Date.now() - loadingStartTime
-                const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
+        useEffect(() => {
+            if (!token) {
+                // Wait until minimum loading time is done before redirecting
+                const remainingTime = Math.max(0, 4000 - (Date.now() - startTimeRef.current));
+                setTimeout(() => router.push("/authentication"), remainingTime);
+                return;
+            }
 
-                if (status === "unauthenticated" && !token) {
-                    // Not authenticated - wait remaining time before redirect
-                    setTimeout(() => {
-                        router.push("/authentication")
-                    }, remainingTime)
+            if (!isLoading && minLoadingDone) {
+                if (isError || !user?._id) {
+                    router.push("/authentication");
                 } else {
-                    // Authenticated - wait remaining time before showing content
-                    setTimeout(() => {
-                        setIsAuth(true)
-                        setShowLoading(false)
-                    }, remainingTime)
+                    // Save userId to localStorage if token is valid
+                    localStorage.setItem("userId", user._id);
                 }
+                setInitialCheckDone(true);
             }
+        }, [token, isLoading, isError, user, router, minLoadingDone]);
 
-            // Set a timeout to ensure minimum 3 seconds loading
-            const timer = setTimeout(checkAuth, minLoadingTime)
-
-            // Also check auth immediately in case loading takes longer than 3s
-            if (status !== "loading") {
-                checkAuth()
-            }
-
-            return () => clearTimeout(timer)
-        }, [status, router, loadingStartTime])
-
-        if (showLoading) {
-            return <LoadingAnimation />
+        // Show loading animation for minimum 4 seconds or until auth check completes
+        if (!minLoadingDone || !initialCheckDone || isLoading) {
+            return <LoadingAnimation />;
         }
 
-        if (!isAuth) {
-            return null // Don't flash content before redirect
+        if (!user?._id) {
+            return null; // Redirect will happen from useEffect
         }
 
-        return <WrappedComponent {...props} />
-    }
+        return <WrappedComponent {...props} />;
+    };
 }

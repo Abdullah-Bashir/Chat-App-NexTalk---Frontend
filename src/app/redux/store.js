@@ -1,15 +1,20 @@
-// redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import { authApi } from "../redux/api/authApi"; // adjust the import path as needed
+import { authApi } from "./api/authApi";
+import { chatApi } from "./api/chatApi";
+import { socketApi } from './api/socketApi' // <-- IMPORT HERE
+
 
 export const store = configureStore({
     reducer: {
-        // Add the generated reducer as a specific top-level slice
         [authApi.reducerPath]: authApi.reducer,
+        [chatApi.reducerPath]: chatApi.reducer,
+        [socketApi.reducerPath]: socketApi.reducer,
     },
-    // Adding the api middleware enables caching, invalidation, polling, etc.
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authApi.middleware),
+        getDefaultMiddleware()
+            .concat(authApi.middleware)
+            .concat(chatApi.middleware)
+            .concat(socketApi.middleware),
     devTools: process.env.NODE_ENV !== "production",
 });
 

@@ -48,7 +48,7 @@ export function LoginForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2">
             <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -84,7 +84,7 @@ export function LoginForm() {
                 )}
             </Button>
 
-            <div className="flex items-center gap-2 my-4">
+            <div className="flex items-center gap-2 my-2">
                 <div className="flex-1 border-t" />
                 <span className="text-[10px] text-muted-foreground">or continue with</span>
                 <div className="flex-1 border-t" />

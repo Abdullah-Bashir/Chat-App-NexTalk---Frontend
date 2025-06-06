@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -9,45 +10,69 @@ import ChatArea from "./components/ChatArea"
 import ChatHeader from "./components/ChatHeader"
 
 function ChatPage() {
-    const [currentChat, setCurrentChat] = useState(null)
+
+    const [currentChat, setCurrentChat] = useState({
+        chatId: null,
+        userId: null,
+        userName: null,
+        userAvatar: null,
+        isOnline: false
+    })
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
+    console.log("Current chatId:", currentChat.chatId)
+    console.log("Current userId:", currentChat.userId)
+
 
     return (
-        <div className="h-screen flex flex-col relative overflow-hidden bg-background/30">
-            {/* Circuit background with higher z-index to ensure visibility */}
+        <div className="h-screen flex flex-col relative overflow-hidden bg-background text-foreground">
+
+            {/* Background circuit grid */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 <CircuitBackground />
             </div>
 
-            {/* Main layout with reduced opacity and rounded corners */}
-            <div className="flex-1 flex flex-col relative z-10 p-3 h-screen">
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg bg-black/10 backdrop-blur-md h-full flex flex-col">
-                    <ChatHeader onMenuClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} />
+            {/* Main container */}
+            <div className="flex-1 flex flex-col relative z-10 p-2 md:p-10 h-screen">
+                <div className="rounded-xl overflow-hidden border border-border shadow-xl bg-muted/30 backdrop-blur-lg h-full flex flex-col">
+                    <ChatHeader
+                        userName={currentChat.userName}
+                        userAvatar={currentChat.userAvatar}
+                        onMenuClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+                    />
 
-                    <div className="flex flex-1 overflow-hidden h-[calc(100%-60px)]">
-                        {/* User list sidebar with glass effect */}
+                    <div className="flex flex-1 overflow-hidden h-[calc(100%-64px)]">
+
+                        {/* Sidebar */}
                         <div
                             className={cn(
-                                "w-full md:w-80 lg:w-96 border-r border-white/10 bg-background/30 backdrop-blur-md",
+                                "w-full md:w-80 lg:w-96 border-r border-border bg-background/50",
                                 "fixed md:relative inset-0 z-20 md:z-auto transform",
                                 "transition-all duration-300 ease-in-out",
-                                isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+                                isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
                             )}
                         >
                             <UserList
                                 currentChat={currentChat}
-                                onUserSelect={setCurrentChat}
+                                onChatSelect={setCurrentChat}
                                 onCloseMobileSidebar={() => setIsMobileSidebarOpen(false)}
                             />
                         </div>
 
-                        {/* Chat area with glass effect */}
-                        <div className="flex-1 flex flex-col bg-background/20 backdrop-blur-sm">
-                            <ChatArea currentChat={currentChat} />
+                        {/* Chat Area */}
+                        <div className="flex-1 flex flex-col bg-background/60 backdrop-blur-xl">
+                            <ChatArea
+                                chatId={currentChat.chatId}
+                                userId={currentChat.userId}
+                                userName={currentChat.userName}
+                                isOnline={currentChat.isOnline}
+                                userAvatar={currentChat.userAvatar}
+                            />
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     )
 }

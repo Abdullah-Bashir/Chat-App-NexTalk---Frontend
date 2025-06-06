@@ -25,6 +25,7 @@ export default function ChatHeader({ onMenuClick }) {
             await signOut({ callbackUrl: "/authentication" })
         } else {
             localStorage.removeItem("authToken")
+            localStorage.removeItem("userId")
             router.push("/authentication")
         }
     }
