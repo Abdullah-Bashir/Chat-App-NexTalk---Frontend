@@ -162,16 +162,16 @@ export default function DeveloperPage() {
                 variants={itemVariants}
                 className="text-3xl sm:text-4xl font-bold font-geist-sans"
               >
-               giyu tomioka
+               Abdullah
               </motion.h1>
               <motion.p
                 variants={itemVariants}
                 className="text-lg text-primary mt-2"
               >
-                Demon Slayer
+                AI ML
               </motion.p>
               <motion.p
-                variants={itemVariants}
+                variants={itemVariants} 
                 className="text-muted-foreground mt-4"
               >
                 Passionate about creating elegant, responsive web applications with cutting-edge
