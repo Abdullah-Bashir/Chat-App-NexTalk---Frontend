@@ -171,7 +171,7 @@ export default function DeveloperPage() {
                 MERN Stack Developer & UI/UX Enthusiast
               </motion.p>
               <motion.p
-                variants={itemVariants}
+                variants={itemVariants} 
                 className="text-muted-foreground mt-4"
               >
                 Passionate about creating elegant, responsive web applications with cutting-edge
