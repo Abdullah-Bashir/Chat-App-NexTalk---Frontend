@@ -176,7 +176,7 @@ export default function DeveloperPage() {
               >
                 Passionate about creating elegant, responsive web applications with cutting-edge
                 technologies. I specialize in Next.js, React, and modern CSS frameworks like
-                Tailwind. When I'm not coding, you can find me exploring new design patterns or
+                Tailwind. When I&apos;m not coding, you can find me exploring new design patterns or
                 contributing to open source projects.
               </motion.p>
 
@@ -252,7 +252,7 @@ export default function DeveloperPage() {
           >
             <h2 className="text-2xl font-bold font-geist-sans mb-4">Interested in working together?</h2>
             <p className="text-muted-foreground mb-6">
-              I'm always open to discussing new projects and opportunities.
+              I&apos;m always open to discussing new projects and opportunities.
             </p>
             <div className="flex gap-4 justify-center">
               <Button asChild>
