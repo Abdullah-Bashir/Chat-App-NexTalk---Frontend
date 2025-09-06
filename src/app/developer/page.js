@@ -162,13 +162,13 @@ export default function DeveloperPage() {
                 variants={itemVariants}
                 className="text-3xl sm:text-4xl font-bold font-geist-sans"
               >
-               Hajra Shahbaz
+               giyu tomioka
               </motion.h1>
               <motion.p
                 variants={itemVariants}
                 className="text-lg text-primary mt-2"
               >
-                Full Stack Developer & UI/UX Enthusiast
+                Demon Slayer
               </motion.p>
               <motion.p
                 variants={itemVariants}
